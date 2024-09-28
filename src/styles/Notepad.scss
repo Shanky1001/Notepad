@@ -84,6 +84,11 @@ $font-families: (
     &:hover {
       background-color: #f0f0f0;
     }
+
+    .child {
+      position: absolute;
+      top: 2rem;
+    }
   }
 }
 

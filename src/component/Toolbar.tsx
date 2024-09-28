@@ -1,6 +1,17 @@
+import { useState } from "react";
 import { FONT_FAMILIES, FONT_SIZES, ON_CHANGE_KEYS } from "../constants";
-
+import {
+  FaBold,
+  FaItalic,
+  FaUnderline,
+  FaStrikethrough,
+  FaLink,
+  FaHighlighter,
+} from "react-icons/fa";
+import { MdColorLens } from "react-icons/md";
+import ColorPicker from "./ColorPicker";
 type ToolbarPropTypes = {
+  options?: { fontFamilyOptions?: string[]; fontSizeOptions?: string[] };
   toolbarPosition: { top: string; left: string };
   fontFamily: string;
   fontSize: string;
@@ -12,7 +23,19 @@ function Toolbar({
   fontFamily,
   fontSize,
   onChange,
+  options = {},
 }: ToolbarPropTypes) {
+  const { fontFamilyOptions = FONT_FAMILIES, fontSizeOptions = FONT_SIZES } =
+    options;
+
+  const [color, setColor] = useState<string>("#000000"); // Default color
+  const [isColorPickerVisible, setIsColorPickerVisible] =
+    useState<boolean>(false);
+
+  const handleColorChange = (selectedColor: string) => {
+    setColor(selectedColor);
+    // applyFormatting("foreColor", selectedColor); // Apply selected color
+  };
   return (
     <div
       className="toolbar"
@@ -23,7 +46,7 @@ function Toolbar({
         onChange={(e) => onChange(ON_CHANGE_KEYS.FONT_FAMILY, e.target.value)}
         className="select"
       >
-        {FONT_FAMILIES.map((font) => (
+        {fontFamilyOptions.map((font) => (
           <option key={font} value={font}>
             {font}
           </option>
@@ -35,25 +58,45 @@ function Toolbar({
         onChange={(e) => onChange(ON_CHANGE_KEYS.FONT_SIZE, e.target.value)}
         className="select"
       >
-        {FONT_SIZES.map((size) => (
+        {fontSizeOptions.map((size) => (
           <option key={size} value={size}>
             {size}
           </option>
         ))}
       </select>
 
-      {/* <button
-        onClick={toggleBold}
-        className={`toolbar-button ${isBold ? "active" : ""}`}
-      >
-        Bold
+      <button className="toolbar-button">
+        <FaBold />
+      </button>
+      <button className="toolbar-button">
+        <FaItalic />
+      </button>
+      <button className="toolbar-button">
+        <FaUnderline />
+      </button>
+      <button className="toolbar-button">
+        <FaStrikethrough />
+      </button>
+      <button className="toolbar-button">
+        <FaHighlighter />
+      </button>
+      <button className="toolbar-button">
+        <FaLink />
       </button>
       <button
-        onClick={toggleItalic}
-        className={`toolbar-button ${isItalic ? "active" : ""}`}
+        className="toolbar-button"
+        style={{ position: "relative" }}
+        onClick={() => setIsColorPickerVisible(!isColorPickerVisible)}
       >
-        Italic
-      </button> */}
+        <MdColorLens />
+        {isColorPickerVisible && (
+          <ColorPicker
+            defaultValue={color}
+            onChange={handleColorChange}
+            onClose={() => setIsColorPickerVisible(false)}
+          />
+        )}
+      </button>
     </div>
   );
 }
