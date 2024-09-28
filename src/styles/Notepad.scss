@@ -1,0 +1,100 @@
+$primary-color: #007bff;
+$hover-color: #0056b3;
+$toolbar-bg-color: #fff;
+$border-color: #ccc;
+$font-sizes: (12px, 14px, 16px, 18px, 20px, 24px);
+$font-families: (
+  "Arial",
+  "Courier New",
+  "Georgia",
+  "Times New Roman",
+  "Verdana"
+);
+
+// Mixins for button styles
+@mixin button-styles($bg-color, $text-color, $hover-bg-color) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hover-bg-color;
+  }
+}
+
+// Main container styling
+.notepad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
+}
+
+// Textarea (contenteditable) styling
+.textarea {
+  width: 80%;
+  height: 300px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid $border-color;
+  font-family: Arial, sans-serif;
+  white-space: pre-wrap;
+  outline: none;
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
+// Toolbar styling
+.toolbar {
+  position: absolute;
+  display: flex;
+  background-color: $toolbar-bg-color;
+  border: 1px solid $border-color;
+  padding: 5px;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  .select {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+  }
+
+  // Toolbar buttons
+  .toolbar-button {
+    padding: 5px 10px;
+    font-size: 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: $toolbar-bg-color;
+    border: 1px solid $border-color;
+
+    &.active {
+      font-weight: bold;
+    }
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+// Button container styling
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+
+// Save and clear buttons
+.button {
+  @include button-styles($primary-color, white, $hover-color);
+}
