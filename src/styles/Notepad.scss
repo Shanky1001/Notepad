@@ -26,45 +26,40 @@ $font-families: (
   }
 }
 
-// Main container styling
-.notepad-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
+.container {
   width: 100%;
+  position: relative;
+  height: 100%;
 }
 
 // Textarea (contenteditable) styling
 .textarea {
-  width: 80%;
-  height: 300px;
+  width: 100%;
+  height: 100%;
   padding: 10px;
-  margin-bottom: 20px;
   border-radius: 5px;
   border: 1px solid $border-color;
   font-family: Arial, sans-serif;
   white-space: pre-wrap;
   outline: none;
-
-  &::placeholder {
-    color: #aaa;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
 // Toolbar styling
 .toolbar {
-  position: absolute;
+  position: fixed;
+  z-index: 10;
+  top: 40px;
   display: flex;
   background-color: $toolbar-bg-color;
   border: 1px solid $border-color;
   padding: 5px;
-  z-index: 10;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   .select {
-    margin-left: 10px;
-    margin-right: 10px;
     padding: 5px;
   }
 
@@ -72,10 +67,37 @@ $font-families: (
   .toolbar-button {
     padding: 5px 10px;
     font-size: 16px;
-    margin: 0 5px;
     cursor: pointer;
     background-color: $toolbar-bg-color;
     border: 1px solid $border-color;
+
+    position: relative;
+    display: inline-block;
+    span {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      top: 150%;
+      left: 50%;
+      margin-left: -60px;
+    }
+
+    span::after {
+      content: " ";
+      position: absolute;
+      bottom: 100%; /* At the top of the tooltip */
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent black transparent;
+    }
 
     &.active {
       font-weight: bold;
@@ -85,9 +107,8 @@ $font-families: (
       background-color: #f0f0f0;
     }
 
-    .child {
-      position: absolute;
-      top: 2rem;
+    &:hover span {
+      visibility: visible;
     }
   }
 }

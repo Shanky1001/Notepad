@@ -12,14 +12,12 @@ import { MdColorLens } from "react-icons/md";
 import ColorPicker from "./ColorPicker";
 type ToolbarPropTypes = {
   options?: { fontFamilyOptions?: string[]; fontSizeOptions?: string[] };
-  toolbarPosition: { top: string; left: string };
   fontFamily: string;
   fontSize: string;
   onChange: (key: string, value: string) => void;
 };
 
 function Toolbar({
-  toolbarPosition,
   fontFamily,
   fontSize,
   onChange,
@@ -37,10 +35,7 @@ function Toolbar({
     // applyFormatting("foreColor", selectedColor); // Apply selected color
   };
   return (
-    <div
-      className="toolbar"
-      style={{ top: toolbarPosition.top, left: toolbarPosition.left }}
-    >
+    <div className="toolbar">
       <select
         value={fontFamily}
         onChange={(e) => onChange(ON_CHANGE_KEYS.FONT_FAMILY, e.target.value)}
@@ -67,28 +62,36 @@ function Toolbar({
 
       <button className="toolbar-button">
         <FaBold />
+        <span>Bold</span>
       </button>
       <button className="toolbar-button">
         <FaItalic />
+        <span>Italics</span>
       </button>
       <button className="toolbar-button">
         <FaUnderline />
+        <span>Underline</span>
       </button>
       <button className="toolbar-button">
         <FaStrikethrough />
+        <span>StrikeThrough</span>
       </button>
       <button className="toolbar-button">
         <FaHighlighter />
+        <span>Highlight</span>
       </button>
       <button className="toolbar-button">
         <FaLink />
+        <span>Link</span>
       </button>
-      <button
-        className="toolbar-button"
-        style={{ position: "relative" }}
-        onClick={() => setIsColorPickerVisible(!isColorPickerVisible)}
-      >
-        <MdColorLens />
+      <div style={{ position: "relative" }}>
+        <button
+          className="toolbar-button"
+          onClick={() => setIsColorPickerVisible(!isColorPickerVisible)}
+        >
+          <MdColorLens />
+          <span>Color</span>
+        </button>
         {isColorPickerVisible && (
           <ColorPicker
             defaultValue={color}
@@ -96,7 +99,7 @@ function Toolbar({
             onClose={() => setIsColorPickerVisible(false)}
           />
         )}
-      </button>
+      </div>
     </div>
   );
 }
