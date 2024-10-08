@@ -1,51 +1,32 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { ON_CHANGE_KEYS } from "../constants";
 
 type useTextFormatting = {
   fontFamilies?: string[];
+  fontSizes?: string[];
 };
 
-const useTextFormatting = ({ fontFamilies }: useTextFormatting) => {
+const useTextFormatting = ({ fontFamilies, fontSizes }: useTextFormatting) => {
+  const contentEditableRef = useRef<HTMLDivElement>(null);
   const [fontFamily, setFontFamily] = useState<string>(fontFamilies?.[0] ?? "");
-  const [fontSize, setFontSize] = useState<string>("16px");
-  const [isBold, setIsBold] = useState<boolean>(false);
-  const [isItalic, setIsItalic] = useState<boolean>(false);
-  // // to show toolbar
-  // const [showSelectionToolBar, setShowSelectionToolBar] = useState(false);
-  // const [toolbarPosition, setToolbarPosition] = useState({ top: 0, left: 0 });
-
-  // useEffect(() => {
-  //   const handleSelection = () => {
-  //     const selection = window.getSelection();
-  //     console.log({ selection });
-  //     if (selection && selection.rangeCount > 0) {
-
-  //       // setShowSelectionToolBar(true);
-  //       // const range = selection.getRangeAt(0);
-  //       // const rect = range.getBoundingClientRect();
-  //       // // Show toolbar at the selection position
-  //       // setToolbarPosition({
-  //       //   top: rect.top + window.scrollY - 40, // Adjust toolbar position above the selection
-  //       //   left: rect.left + window.scrollX,
-  //       // });
-  //     }
-  //     // else {
-  //     //   setShowSelectionToolBar(false);
-  //     // }
-  //   };
-
-  //   document.addEventListener("selectionchange", handleSelection);
-  //   return () => {
-  //     document.removeEventListener("selectionchange", handleSelection);
-  //   };
-  // }, []);
+  const [fontSize, setFontSize] = useState<string>(fontSizes?.[0] ?? "16px");
+  // const [isBold, setIsBold] = useState<boolean>(false);
+  // const [isItalic, setIsItalic] = useState<boolean>(false);
 
   const applyFormatting = (command: string, value?: string) => {
     document.execCommand(command, false, value);
+    if (command === ON_CHANGE_KEYS.FONT_FAMILY) {
+      setFontFamily(value!);
+    }
+    if (command === ON_CHANGE_KEYS.FONT_SIZE) {
+      setFontSize(value!);
+    }
+    document.getSelection()?.removeAllRanges();
   };
 
-  const handleCopyHTML = (ref: React.RefObject<HTMLDivElement>) => {
-    if (ref.current) {
-      const html = ref.current.innerHTML;
+  const handleCopyHTML = () => {
+    if (contentEditableRef.current) {
+      const html = contentEditableRef.current.innerHTML;
       navigator.clipboard
         .writeText(html)
         .then(() => alert("HTML copied to clipboard!"))
@@ -53,18 +34,22 @@ const useTextFormatting = ({ fontFamilies }: useTextFormatting) => {
     }
   };
 
+  const handleToolbarClick = useCallback((key: string, value?: string) => {
+    applyFormatting(key, value);
+  }, []);
+
   return {
+    ref: contentEditableRef,
     fontFamily,
     setFontFamily,
     fontSize,
     setFontSize,
-    isBold,
-    setIsBold,
-    isItalic,
-    setIsItalic,
+    // isBold,
+    // setIsBold,
+    // isItalic,
+    // setIsItalic,
     applyFormatting,
-    // showSelectionToolBar,
-    // toolbarPosition,
+    handleToolbarClick,
     handleCopyHTML,
   };
 };

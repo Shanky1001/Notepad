@@ -1,6 +1,7 @@
 $primary-color: #007bff;
 $hover-color: #0056b3;
-$toolbar-bg-color: #fff;
+$toolbar-bg-color: #e7e2e2;
+$toolbar-btn-bg-color: #fff;
 $border-color: #ccc;
 $font-sizes: (12px, 14px, 16px, 18px, 20px, 24px);
 $font-families: (
@@ -27,9 +28,9 @@ $font-families: (
 }
 
 .container {
-  width: 100%;
   position: relative;
-  height: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 // Textarea (contenteditable) styling
@@ -39,10 +40,12 @@ $font-families: (
   padding: 10px;
   border-radius: 5px;
   border: 1px solid $border-color;
-  font-family: Arial, sans-serif;
+  font-family: "Times New Roman", Times, serif;
   white-space: pre-wrap;
   outline: none;
   overflow: auto;
+  box-sizing: border-box;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -50,30 +53,41 @@ $font-families: (
 
 // Toolbar styling
 .toolbar {
-  position: fixed;
-  z-index: 10;
-  top: 40px;
+  width: 100%;
+  font-family: "Times New Roman", Times, serif;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: $toolbar-bg-color;
   border: 1px solid $border-color;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+
+  .toolbar-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
 
   .select {
     padding: 5px;
+    height: 30px;
   }
 
   // Toolbar buttons
   .toolbar-button {
+    height: 30px;
     padding: 5px 10px;
     font-size: 16px;
     cursor: pointer;
-    background-color: $toolbar-bg-color;
+    background-color: $toolbar-btn-bg-color;
     border: 1px solid $border-color;
-
     position: relative;
     display: inline-block;
+
     span {
+      font-family: "Times New Roman", Times, serif;
       visibility: hidden;
       width: 120px;
       background-color: black;
@@ -81,6 +95,7 @@ $font-families: (
       text-align: center;
       border-radius: 6px;
       padding: 5px 0;
+      font-size: 14px;
       position: absolute;
       z-index: 1;
       top: 150%;
@@ -91,7 +106,8 @@ $font-families: (
     span::after {
       content: " ";
       position: absolute;
-      bottom: 100%; /* At the top of the tooltip */
+      bottom: 100%;
+      /* At the top of the tooltip */
       left: 50%;
       margin-left: -5px;
       border-width: 5px;

@@ -21,6 +21,7 @@ function ColorPicker({
       <SketchPicker
         onChangeComplete={handleChangeComplete}
         color={defaultValue}
+        disableAlpha
       />
     </div>
   );
